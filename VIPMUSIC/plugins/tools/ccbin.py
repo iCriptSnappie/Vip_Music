@@ -7,31 +7,31 @@ from pyrogram.types import *
 async def check_ccbin(client, message):
     if len(message.command) < 2:
         return await message.reply_text(
-            "<b>Please Give Me a Bin To\nGet Bin Details !</b>"
+            "<b>ᴘʟᴇᴀꜱᴇ ɢɪᴠᴇ ᴍᴇ ᴀ ʙɪɴ ᴛᴏ\nɢᴇᴛ ʙɪɴ ᴅᴇᴛᴀɪʟꜱ !</b>"
         )
     try:
         await message.delete()
     except:
         pass
-    aux = await message.reply_text("<b>Checking ...</b>")
+    aux = await message.reply_text("<b>ᴄʜᴇᴄᴋɪɴɢ...</b>")
     bin = message.text.split(None, 1)[1]
     if len(bin) < 6:
-        return await aux.edit("<b>❌ Wrong Bin❗...</b>")
+        return await aux.edit("<b>❌ ᴡʀᴏɴɢ ʙɪɴ❗...</b>")
     try:
         resp = await api.bininfo(bin)
         await aux.edit(f"""
-<b>💠 Bin Full Details:</b>
+<b>💠 ʙɪɴ ꜰᴜʟʟ ᴅᴇᴛᴀɪʟꜱ:</b>
 
-<b>🏦 Bank:</b> <tt>{resp.bank}</tt>
-<b>💳 Bin:</b> <tt>{resp.bin}</tt>
-<b>🏡 Country:</b> <tt>{resp.country}</tt>
-<b>🇮🇳 Flag:</b> <tt>{resp.flag}</tt>
-<b>🧿 ISO:</b> <tt>{resp.iso}</tt>
-<b>⏳ Level:</b> <tt>{resp.level}</tt>
-<b>🔴 Prepaid:</b> <tt>{resp.prepaid}</tt>
-<b>🆔 Type:</b> <tt>{resp.type}</tt>
-<b>ℹ️ Vendor:</b> <tt>{resp.vendor}</tt>"""
+<b>🏦 ʙᴀɴᴋ:</b> <tt>{resp.bank}</tt>
+<b>💳 ʙɪɴ:</b> <tt>{resp.bin}</tt>
+<b>🏡 ᴄᴏᴜɴᴛʀʏ:</b> <tt>{resp.country}</tt>
+<b>🇮🇳 ꜰʟᴀɢ:</b> <tt>{resp.flag}</tt>
+<b>🧿 ɪꜱᴏ:</b> <tt>{resp.iso}</tt>
+<b>⏳ ʟᴇᴠᴇʟ:</b> <tt>{resp.level}</tt>
+<b>🔴 ᴘʀᴇᴘᴀɪᴅ:</b> <tt>{resp.prepaid}</tt>
+<b>🆔 ᴛʏᴘᴇ:</b> <tt>{resp.type}</tt>
+<b>ℹ️ ᴠᴇɴᴅᴏʀ:</b> <tt>{resp.vendor}</tt>"""
         )
     except:
         return await aux.edit(f"""
-🚫 BIN not recognized. Please enter a valid BIN.""")
+🚫 ʙɪɴ ɴᴏᴛ ʀᴇᴄᴏɢɴɪᴢᴇᴅ. ᴘʟᴇᴀꜱᴇ ᴇɴᴛᴇʀ ᴀ ᴠᴀʟɪᴅ ʙɪɴ.""")
