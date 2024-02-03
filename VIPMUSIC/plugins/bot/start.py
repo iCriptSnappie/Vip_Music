@@ -26,11 +26,11 @@ from strings import get_string
 
 
 YUMI_PICS = [
-"https://telegra.ph/file/3ed81ef4e352a691fb0b4.jpg",
-"https://telegra.ph/file/3134ed3b57eb051b8c363.jpg",
-"https://telegra.ph/file/6ca0813b719b6ade1c250.jpg",
-"https://telegra.ph/file/5a2cbb9deb62ba4b122e4.jpg",
-"https://telegra.ph/file/cb09d52a9555883eb0f61.jpg"
+"https://telegra.ph/file/99ac42edff5e04b37a29c.jpg",
+"https://telegra.ph/file/d9b8a0a5d8809bf5071a6.jpg",
+"https://telegra.ph/file/006f4587dd4a39bf7d448.jpg",
+"https://telegra.ph/file/6e489389e77c2b94332e8.jpg",
+"https://telegra.ph/file/84113b1d76b801fd3aaa9.jpg"
 
 ]
 
