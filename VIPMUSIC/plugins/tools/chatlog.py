@@ -23,15 +23,15 @@ async def join_watcher(_, message):
             count = await app.get_chat_members_count(chat.id)
             username = message.chat.username if message.chat.username else "𝐏ʀɪᴠᴀᴛᴇ 𝐆ʀᴏᴜᴘ"
             msg = (
-                f"**📝𝐌ᴜsɪᴄ 𝐁ᴏᴛ 𝐀ᴅᴅᴇᴅ 𝐈ɴ 𝐀 #𝐍ᴇᴡ_𝐆ʀᴏᴜᴘ**\n\n"
-                f"**📌𝐂ʜᴀᴛ 𝐍ᴀᴍᴇ:** {message.chat.title}\n"
-                f"**🍂𝐂ʜᴀᴛ 𝐈ᴅ:** {message.chat.id}\n"
-                f"**🔐𝐂ʜᴀᴛ 𝐔sᴇʀɴᴀᴍᴇ:** @{username}\n"
-                f"**📈𝐆ʀᴏᴜᴘ 𝐌ᴇᴍʙᴇʀs:** {count}\n"
-                f"**🤔𝐀ᴅᴅᴇᴅ 𝐁ʏ:** {message.from_user.mention}"
+                f"**📝Mᴜsɪᴄ Bᴏᴛ Aᴅᴅᴇᴅ Iɴ A #Nᴇᴡ_Gʀᴏᴜᴘ**\n\n"
+                f"**📌Cʜᴀᴛ Nᴀᴍᴇ:** {message.chat.title}\n"
+                f"**🍂Cʜᴀᴛ Iᴅ:** {message.chat.id}\n"
+                f"**🔐Cʜᴀᴛ Usᴇʀɴᴀᴍᴇ:** @{username}\n"
+                f"**📈Gʀᴏᴜᴘ Mᴇᴍʙᴇʀs:** {count}\n"
+                f"**🤔Aᴅᴅᴇᴅ Bʏ:** {message.from_user.mention}"
             )
             await app.send_photo(LOG_GROUP_ID, photo=random.choice(photo), caption=msg, reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(f"😍𝐀ᴅᴅᴇᴅ 𝐁ʏ😍", url=f"tg://openmessage?user_id={message.from_user.id}")]
+            [InlineKeyboardButton(f"😍Aᴅᴅᴇᴅ Bʏ😍", url=f"tg://openmessage?user_id={message.from_user.id}")]
          ]))
 
 
@@ -42,5 +42,5 @@ async def on_left_chat_member(_, message: Message):
         title = message.chat.title
         username = f"@{message.chat.username}" if message.chat.username else "𝐏ʀɪᴠᴀᴛᴇ 𝐂ʜᴀᴛ"
         chat_id = message.chat.id
-        left = f"✫ <b><u>#𝐋ᴇғᴛ_𝐆ʀᴏᴜᴘ</u></b> ✫\n\n𝐂ʜᴀᴛ 𝐓ɪᴛʟᴇ : {title}\n\n𝐂ʜᴀᴛ 𝐈ᴅ : {chat_id}\n\n𝐑ᴇᴍᴏᴠᴇᴅ 𝐁ʏ : {remove_by}\n\n𝐁ᴏᴛ : @{app.username}"
+        left = f"✫ <b><u>#Lᴇғᴛ_Gʀᴏᴜᴘ</u></b> ✫\n\nCʜᴀᴛ Tɪᴛʟᴇ : {title}\n\nCʜᴀᴛ Iᴅ : {chat_id}\n\nRᴇᴍᴏᴠᴇᴅ Bʏ : {remove_by}\n\nBᴏᴛ : @{app.username}"
         await app.send_photo(LOG_GROUP_ID, photo=random.choice(photo), caption=left)
