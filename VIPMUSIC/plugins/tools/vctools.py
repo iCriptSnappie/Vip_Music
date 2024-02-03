@@ -64,7 +64,7 @@ async def bot_leave(_, message):
 
 @app.on_message(filters.command(["spg"], ["/", "!", "."]))
 async def search(event):
-    msg = await event.respond("Searching...")
+    msg = await event.respond("sᴇᴀʀᴄʜɪɴɢ...")
     async with aiohttp.ClientSession() as session:
         start = 1
         async with session.get(f"https://content-customsearch.googleapis.com/customsearch/v1?cx=ec8db9e1f9e41e65e&q={event.text.split()[1]}&key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM&start={start}", headers={"x-referer": "https://explorer.apis.google.com"}) as r:
