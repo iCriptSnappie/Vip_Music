@@ -22,11 +22,8 @@ from logging import getLogger
 from VIPMUSIC.utils.vip_ban import admin_filter
 
 random_photo = [
-    "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
-    "https://telegra.ph/file/3ef2cc0ad2bc548bafb30.jpg",
-    "https://telegra.ph/file/a7d663cd2de689b811729.jpg",
-    "https://telegra.ph/file/6f19dc23847f5b005e922.jpg",
-    "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
+    "https://telegra.ph/file/39c681442038b559be2f1.jpg",
+    "https://telegra.ph/file/cf283a595e8e01c5e4f73.jpg",
 ]
 
 # --------------------------------------------------------------------------------- #
