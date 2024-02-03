@@ -87,10 +87,10 @@ async def download_instareels(c: app, m: Message):
     try:
         reel_ = m.command[1]
     except IndexError:
-        await m.reply_text("Give me an link to download it...")
+        await m.reply_text("ɢɪᴠᴇ ᴍᴇ ᴀ ʟɪɴᴋ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ɪᴛ...")
         return
     if not reel_.startswith("https://www.instagram.com/reel/"):
-        await m.reply_text("In order to obtain the requested reel, a valid link is necessary. Kindly provide me with the required link.")
+        await m.reply_text("Iɴ ᴏʀᴅᴇʀ ᴛᴏ ᴏʙᴛᴀɪɴ ᴛʜᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ʀᴇᴇʟ, ᴀ ᴠᴀʟɪᴅ ʟɪɴᴋ ɪs ɴᴇᴄᴇssᴀʀʏ. Kɪɴᴅʟʏ ᴘʀᴏᴠɪᴅᴇ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ ʀᴇǫᴜɪʀᴇᴅ ʟɪɴᴋ.")
         return
     OwO = reel_.split(".",1)
     Reel_ = ".dd".join(OwO)
@@ -106,7 +106,7 @@ async def download_instareels(c: app, m: Message):
                 await m.reply_document(Reel_)
                 return
             except Exception:
-                await m.reply_text("I am unable to reach to this reel.")
+                await m.reply_text("I ᴀᴍ ᴜɴᴀʙʟᴇ ᴛᴏ ʀᴇᴀᴄʜ ᴛᴏ ᴛʜɪs ʀᴇᴇʟ.")
 
 
 
@@ -125,8 +125,8 @@ async def instagram_reel(client, message):
                 video_url = media_urls[0]['url']
                 await message.reply_video(f"{video_url}")
             else:
-                await message.reply("No video found in the response. may be accountbis private.")
+                await message.reply("Nᴏ ᴠɪᴅᴇᴏ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ʀᴇsᴘᴏɴsᴇ. Mᴀʏʙᴇ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴘʀɪᴠᴀᴛᴇ.")
         else:
-            await message.reply("Request was not successful.")
+            await message.reply("Rᴇǫᴜᴇsᴛ ᴡᴀs ɴᴏᴛ sᴜᴄᴄᴇssғᴜʟ.")
     else:
-        await message.reply("Please provide a valid Instagram URL using the /reels command.")
+        await message.reply("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ Iɴsᴛᴀɢʀᴀᴍ URL ᴜsɪɴɢ ᴛʜᴇ /reels ᴄᴏᴍᴍᴀɴᴅ.")
