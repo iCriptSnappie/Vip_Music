@@ -32,13 +32,13 @@ def spam_command(client, message):
         for _ in range(num_times):
             # Send the spam message to the Telegram chat and mention the user
             message.reply_text(f"{user_to_tag} **{text_to_spam}**")
-            time.sleep(1)  # Add a delay between spam messages
+            time.sleep(0.1)  # Add a delay between spam messages
     elif message.reply_to_message:
         # If no text is provided with the spam command, spam the replied user's message
         user_to_tag = message.reply_to_message.from_user.mention()
 
         for _ in range(5):  # You can adjust the number of spam messages
             message.reply_to_message.reply_text(f"{user_to_tag} **SPAM!**")
-            time.sleep(0.2)  # Add a delay between spam messages
+            time.sleep(0.1)  # Add a delay between spam messages
     else:
         message.reply_text("ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴍᴇssᴀɢᴇ ᴀɴᴅ ᴜsᴇ ᴛʜᴇ .raid ᴄᴏᴍᴍᴀɴᴅ ᴛᴏ sᴘᴀᴍ.")
