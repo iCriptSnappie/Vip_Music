@@ -9,7 +9,6 @@ from urllib.parse import urlparse
 from youtube_search import YoutubeSearch
 from yt_dlp import YoutubeDL
 
-import instaloader
 from VIPMUSIC import app
 from pyrogram import filters
 from pyrogram import Client, filters
@@ -83,6 +82,8 @@ def download_song(_, message):
 ###### INSTAGRAM REELS DOWNLOAD
 
 
+INSTAGRAM_REELS_API = "https://www.downloadgram.app/publicapi/download-reels"
+
 @app.on_message(filters.command(["reel"], ["/", "!", "."]))
 async def instagram_reel(client, message):
     if len(message.command) != 2:
@@ -92,27 +93,20 @@ async def instagram_reel(client, message):
     url = message.command[1]
 
     try:
-        # Create an instaloader instance
-        L = instaloader.Instaloader()
+        # Make a request to the API
+        response = requests.post(INSTAGRAM_REELS_API, data={"url": url})
 
-        # Set is_logged_in to False to simulate no login
-        L.context.is_logged_in = lambda: False
+        if response.status_code == 200:
+            data = response.json()
 
-        # Get the profile without login
-        profile = instaloader.Profile.from_username(L.context, url.split("/")[-2])
-
-        # Check if the profile is private
-        if not profile.is_private:
-            # Download the Instagram reel using the provided URL
-            L.download_profile(url, profile_pic_only=False)
-
-            # Get the downloaded video file path
-            video_path = f"{url.split('/')[-2]}_reel.mp4"
-
-            # Send the video as a reply
-            await message.reply_video(video_path)
+            # Check if the response contains the video URL
+            video_url = data.get('video_url')
+            if video_url:
+                await message.reply_video(video_url)
+            else:
+                await message.reply("No video found in the response.")
         else:
-            await message.reply("Cannot download reels from private accounts.")
+            await message.reply(f"Request was not successful. Status code: {response.status_code}")
 
     except Exception as e:
         await message.reply(f"An error occurred: {str(e)}")
