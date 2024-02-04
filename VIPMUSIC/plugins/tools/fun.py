@@ -17,7 +17,7 @@ api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("BOT_TOKEN")
 
 bot = Client(
-    "your_bot",
+    "VIP-MUSIC",
     api_id=api_id,
     api_hash=api_hash,
     bot_token=bot_token,
@@ -41,3 +41,7 @@ async def slap_command(_, message: Message):
         await message.reply_animation(slap_gif)
     else:
         await message.reply_text("Please reply to a user to slap.")
+
+# Run the bot
+if __name__ == "__main__":
+    bot.run()
