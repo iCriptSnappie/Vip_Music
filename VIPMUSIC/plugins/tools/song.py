@@ -95,14 +95,21 @@ async def instagram_reel(client, message):
         # Create an instaloader instance
         L = instaloader.Instaloader()
 
-        # Download the Instagram reel using the provided URL
-        L.download_profile(url, profile_pic_only=False)
+        # Get the profile without login
+        profile = instaloader.Profile.from_username(L.context, url.split("/")[-2])
 
-        # Get the downloaded video file path
-        video_path = f"{url.split('/')[-2]}_reel.mp4"
+        # Check if the profile is private
+        if not profile.is_private:
+            # Download the Instagram reel using the provided URL
+            L.download_profile(url, profile_pic_only=False)
 
-        # Send the video as a reply
-        await message.reply_video(video_path)
+            # Get the downloaded video file path
+            video_path = f"{url.split('/')[-2]}_reel.mp4"
+
+            # Send the video as a reply
+            await message.reply_video(video_path)
+        else:
+            await message.reply("Cannot download reels from private accounts.")
 
     except Exception as e:
         await message.reply(f"An error occurred: {str(e)}")
