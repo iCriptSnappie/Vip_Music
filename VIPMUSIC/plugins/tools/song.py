@@ -93,7 +93,7 @@ async def instagram_reel(client, message):
 
     try:
         # Create an instaloader instance
-        L = instaloader.Instaloader(download_pictures=False, download_videos=False, download_geotags=False, download_comments=False, compress_json=False, quiet=True, no_warnings=True, sleep_between_requests=1.5, user_agent=None, max_connection_attempts=0, request_timeout=None, max_sleep_between_requests=60)
+        L = instaloader.Instaloader()
 
         # Set is_logged_in to False to simulate no login
         L.context.is_logged_in = lambda: False
