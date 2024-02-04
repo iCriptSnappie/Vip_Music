@@ -107,6 +107,8 @@ async def instagram_reel(client, message):
                 else:
                     await message.reply("No video found in the response.")
             except ValueError:
+                print("Invalid JSON format in the API response:")
+                print(response.content.decode("utf-8"))
                 await message.reply("Invalid JSON format in the API response.")
         else:
             await message.reply(f"Request was not successful. Status code: {response.status_code}")
