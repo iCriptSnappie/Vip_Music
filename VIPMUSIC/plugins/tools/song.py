@@ -9,6 +9,8 @@ from urllib.parse import urlparse
 from youtube_search import YoutubeSearch
 from yt_dlp import YoutubeDL
 
+from instascrape import Post
+from instascrape import Profile
 from VIPMUSIC import app
 from pyrogram import filters
 from pyrogram import Client, filters
