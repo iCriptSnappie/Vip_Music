@@ -82,35 +82,52 @@ def download_song(_, message):
 ###### INSTAGRAM REELS DOWNLOAD
 
 
+@app.on_message(filters.command(["ig"], ["/", "!", "."]))
+async def download_instareels(c: app, m: Message):
+    try:
+        reel_ = m.command[1]
+    except IndexError:
+        await m.reply_text("ɢɪᴠᴇ ᴍᴇ ᴀ ʟɪɴᴋ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ɪᴛ...")
+        return
+    if not reel_.startswith("https://www.instagram.com/reel/"):
+        await m.reply_text("Iɴ ᴏʀᴅᴇʀ ᴛᴏ ᴏʙᴛᴀɪɴ ᴛʜᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ʀᴇᴇʟ, ᴀ ᴠᴀʟɪᴅ ʟɪɴᴋ ɪs ɴᴇᴄᴇssᴀʀʏ. Kɪɴᴅʟʏ ᴘʀᴏᴠɪᴅᴇ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ ʀᴇǫᴜɪʀᴇᴅ ʟɪɴᴋ.")
+        return
+    OwO = reel_.split(".",1)
+    Reel_ = ".dd".join(OwO)
+    try:
+        await m.reply_video(Reel_)
+        return
+    except Exception:
+        try:
+            await m.reply_photo(Reel_)
+            return
+        except Exception:
+            try:
+                await m.reply_document(Reel_)
+                return
+            except Exception:
+                await m.reply_text("I ᴀᴍ ᴜɴᴀʙʟᴇ ᴛᴏ ʀᴇᴀᴄʜ ᴛᴏ ᴛʜɪs ʀᴇᴇʟ.")
+
+
+
+######
+
 @app.on_message(filters.command(["reel"], ["/", "!", "."]))
 async def instagram_reel(client, message):
     if len(message.command) == 2:
         url = message.command[1]
+        response = requests.post(f"https://lexica-api.vercel.app/download/instagram?url={url}")
+        data = response.json()
 
-        # Define the API endpoint and payload
-        api_url = "https://instagram-video-or-images-downloader.p.rapidapi.com/"
-        payload = {"url": url}
-
-        # Define the headers
-        headers = {
-            "content-type": "application/x-www-form-urlencoded",
-            "X-RapidAPI-Key": "f7473ef22bmsh48186d4cd4518b7p19cd29jsn93439d0bf96b",
-            "X-RapidAPI-Host": "instagram-video-or-images-downloader.p.rapidapi.com"
-        }
-
-        # Make a request to the API
-        response = requests.post(api_url, data=payload, headers=headers)
-
-        # Handle the response from the API
-        if response.status_code == 200:
-            data = response.json()
-
-            if data['status'] == "success":
-                media_url = data['data']['url']
-                await message.reply_video(f"{media_url}")
+        if data['code'] == 2:
+            media_urls = data['content']['mediaUrls']
+            if media_urls:
+                video_url = media_urls[0]['url']
+                await message.reply_video(f"{video_url}")
             else:
-                await message.reply("Error downloading Instagram Reel.")
+                await message.reply("Nᴏ ᴠɪᴅᴇᴏ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ʀᴇsᴘᴏɴsᴇ. Mᴀʏʙᴇ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴘʀɪᴠᴀᴛᴇ.")
         else:
-            await message.reply("Error connecting to the Instagram Reel download API.")
+            await message.reply("Rᴇǫᴜᴇsᴛ ᴡᴀs ɴᴏᴛ sᴜᴄᴄᴇssғᴜʟ.")
     else:
-        await message.reply("Please provide a valid Instagram URL using the /reel command.")
+        await message.reply("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ Iɴsᴛᴀɢʀᴀᴍ URL ᴜsɪɴɢ ᴛʜᴇ /reels ᴄᴏᴍᴍᴀɴᴅ.")
+
