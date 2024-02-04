@@ -89,44 +89,50 @@ async def download_instareels(c: app, m: Message):
     except IndexError:
         await m.reply_text("ɢɪᴠᴇ ᴍᴇ ᴀ ʟɪɴᴋ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ɪᴛ...")
         return
+
     if not reel_.startswith("https://www.instagram.com/reel/"):
         await m.reply_text("Iɴ ᴏʀᴅᴇʀ ᴛᴏ ᴏʙᴛᴀɪɴ ᴛʜᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ʀᴇᴇʟ, ᴀ ᴠᴀʟɪᴅ ʟɪɴᴋ ɪs ɴᴇᴄᴇssᴀʀʏ. Kɪɴᴅʟʏ ᴘʀᴏᴠɪᴅᴇ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ ʀᴇǫᴜɪʀᴇᴅ ʟɪɴᴋ.")
         return
-    OwO = reel_.split(".",1)
+
+    # The intention of the next line is unclear, modify as needed
+    OwO = reel_.split(".", 1)
     Reel_ = ".dd".join(OwO)
+
     try:
         await m.reply_video(Reel_)
-        return
-    except Exception:
+    except Exception as e:
         try:
             await m.reply_photo(Reel_)
-            return
-        except Exception:
+        except Exception as e:
             try:
                 await m.reply_document(Reel_)
-                return
-            except Exception:
+            except Exception as e:
                 await m.reply_text("I ᴀᴍ ᴜɴᴀʙʟᴇ ᴛᴏ ʀᴇᴀᴄʜ ᴛᴏ ᴛʜɪs ʀᴇᴇʟ.")
 
 
-
-######
-
 @app.on_message(filters.command(["reel"], ["/", "!", "."]))
 async def instagram_reel(client, message):
-    if len(message.command) == 2:
-        url = message.command[1]
-        response = requests.post(f"https://lexica-api.vercel.app/download/instagram?url={url}")
-        data = response.json()
-
-        if data['code'] == 2:
-            media_urls = data['content']['mediaUrls']
-            if media_urls:
-                video_url = media_urls[0]['url']
-                await message.reply_video(f"{video_url}")
-            else:
-                await message.reply("Nᴏ ᴠɪᴅᴇᴏ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ʀᴇsᴘᴏɴsᴇ. Mᴀʏʙᴇ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴘʀɪᴠᴀᴛᴇ.")
-        else:
-            await message.reply("Rᴇǫᴜᴇsᴛ ᴡᴀs ɴᴏᴛ sᴜᴄᴄᴇssғᴜʟ.")
-    else:
+    if len(message.command) != 2:
         await message.reply("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ Iɴsᴛᴀɢʀᴀᴍ URL ᴜsɪɴɢ ᴛʜᴇ /reels ᴄᴏᴍᴍᴀɴᴅ.")
+        return
+
+    url = message.command[1]
+    response = requests.post(f"https://lexica-api.vercel.app/download/instagram?url={url}")
+
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        await message.reply(f"HTTP error occurred: {err}")
+        return
+
+    data = response.json()
+
+    if data.get('code') == 2:
+        media_urls = data['content'].get('mediaUrls', [])
+        if media_urls:
+            video_url = media_urls[0]['url']
+            await message.reply_video(video_url)
+        else:
+            await message.reply("Nᴏ ᴠɪᴅᴇᴏ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ʀᴇsᴘᴏɴsᴇ. Mᴀʏʙᴇ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴘʀɪᴠᴀᴛᴇ.")
+    else:
+        await message.reply("Rᴇǫᴜᴇsᴛ ᴡᴀs ɴᴏᴛ sᴜᴄᴄᴇssғᴜʟ.")
