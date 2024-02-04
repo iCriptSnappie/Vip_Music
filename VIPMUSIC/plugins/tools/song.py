@@ -97,14 +97,17 @@ async def instagram_reel(client, message):
         response = requests.post(INSTAGRAM_REELS_API, data={"url": url})
 
         if response.status_code == 200:
-            data = response.json()
+            try:
+                data = response.json()
 
-            # Check if the response contains the video URL
-            video_url = data.get('video_url')
-            if video_url:
-                await message.reply_video(video_url)
-            else:
-                await message.reply("No video found in the response.")
+                # Check if the response contains the video URL
+                video_url = data.get('video_url')
+                if video_url:
+                    await message.reply_video(video_url)
+                else:
+                    await message.reply("No video found in the response.")
+            except ValueError:
+                await message.reply("Invalid JSON format in the API response.")
         else:
             await message.reply(f"Request was not successful. Status code: {response.status_code}")
 
