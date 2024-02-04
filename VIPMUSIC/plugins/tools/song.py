@@ -82,36 +82,35 @@ def download_song(_, message):
 ###### INSTAGRAM REELS DOWNLOAD
 
 
-INSTAGRAM_REELS_API = "https://www.downloadgram.app/publicapi/download-reels"
-
 @app.on_message(filters.command(["reel"], ["/", "!", "."]))
 async def instagram_reel(client, message):
-    if len(message.command) != 2:
-        await message.reply("Please provide a valid Instagram URL using the /reels command.")
-        return
+    if len(message.command) == 2:
+        url = message.command[1]
 
-    url = message.command[1]
+        # Define the API endpoint and payload
+        api_url = "https://instagram-video-or-images-downloader.p.rapidapi.com/"
+        payload = {"url": url}
 
-    try:
+        # Define the headers
+        headers = {
+            "content-type": "application/x-www-form-urlencoded",
+            "X-RapidAPI-Key": "f7473ef22bmsh48186d4cd4518b7p19cd29jsn93439d0bf96b",
+            "X-RapidAPI-Host": "instagram-video-or-images-downloader.p.rapidapi.com"
+        }
+
         # Make a request to the API
-        response = requests.post(INSTAGRAM_REELS_API, data={"url": url})
+        response = requests.post(api_url, data=payload, headers=headers)
 
+        # Handle the response from the API
         if response.status_code == 200:
-            try:
-                data = response.json()
+            data = response.json()
 
-                # Check if the response contains the video URL
-                video_url = data.get('video_url')
-                if video_url:
-                    await message.reply_video(video_url)
-                else:
-                    await message.reply("No video found in the response.")
-            except ValueError:
-                print("Invalid JSON format in the API response:")
-                print(response.content.decode("utf-8"))
-                await message.reply("Invalid JSON format in the API response.")
+            if data['status'] == "success":
+                media_url = data['data']['url']
+                await message.reply_video(f"{media_url}")
+            else:
+                await message.reply("Error downloading Instagram Reel.")
         else:
-            await message.reply(f"Request was not successful. Status code: {response.status_code}")
-
-    except Exception as e:
-        await message.reply(f"An error occurred: {str(e)}")
+            await message.reply("Error connecting to the Instagram Reel download API.")
+    else:
+        await message.reply("Please provide a valid Instagram URL using the /reel command.")
