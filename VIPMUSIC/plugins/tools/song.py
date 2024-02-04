@@ -83,33 +83,36 @@ def download_song(_, message):
 
 ###### INSTAGRAM REELS DOWNLOAD
 
-
 @app.on_message(filters.command(["ig"], ["/", "!", "."]))
 async def download_instareels(c: app, m: Message):
     try:
-        reel_ = m.command[1]
+        reel_url = m.command[1]
     except IndexError:
         await m.reply_text("ɢɪᴠᴇ ᴍᴇ ᴀ ʟɪɴᴋ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ ɪᴛ...")
         return
-    if not reel_.startswith("https://www.instagram.com/reel/"):
+
+    if not reel_url.startswith("https://www.instagram.com/reel/"):
         await m.reply_text("Iɴ ᴏʀᴅᴇʀ ᴛᴏ ᴏʙᴛᴀɪɴ ᴛʜᴇ ʀᴇǫᴜᴇsᴛᴇᴅ ʀᴇᴇʟ, ᴀ ᴠᴀʟɪᴅ ʟɪɴᴋ ɪs ɴᴇᴄᴇssᴀʀʏ. Kɪɴᴅʟʏ ᴘʀᴏᴠɪᴅᴇ ᴍᴇ ᴡɪᴛʜ ᴛʜᴇ ʀᴇǫᴜɪʀᴇᴅ ʟɪɴᴋ.")
         return
-    OwO = reel_.split(".",1)
-    Reel_ = ".dd".join(OwO)
-    try:
-        await m.reply_video(Reel_)
-        return
-    except Exception:
-        try:
-            await m.reply_photo(Reel_)
-            return
-        except Exception:
-            try:
-                await m.reply_document(Reel_)
-                return
-            except Exception:
-                await m.reply_text("I ᴀᴍ ᴜɴᴀʙʟᴇ ᴛᴏ ʀᴇᴀᴄʜ ᴛᴏ ᴛʜɪs ʀᴇᴇʟ.")
 
+    try:
+        post = Post(url=reel_url)
+        post.load()
+        media_url = post.url
+        media_type = post.type
+        if media_type == "GraphVideo":
+            await m.reply_video(media_url)
+        elif media_type == "GraphImage":
+            await m.reply_photo(media_url)
+        elif media_type == "GraphSidecar":
+            # Handle multiple media (carousel)
+            # You can customize this part based on your needs
+            media_urls = [item.url for item in post['edge_sidecar_to_children']['edges']]
+            await m.reply_media_group([{"type": "photo", "media": url} for url in media_urls])
+        else:
+            await m.reply_text("Unsupported media type.")
+    except Exception as e:
+        await m.reply_text(f"Error: {str(e)}")
 
 
 ######
@@ -118,18 +121,15 @@ async def download_instareels(c: app, m: Message):
 async def instagram_reel(client, message):
     if len(message.command) == 2:
         url = message.command[1]
-        response = requests.post(f"https://lexica-api.vercel.app/download/instagram?url={url}")
-        data = response.json()
+        # Assuming you want to use the 'instascrape' library here for profile scraping
+        profile = Profile(url)
+        profile.load()
+        reels = profile.get_posts(filters=lambda post: post.is_reel)
 
-        if data['code'] == 2:
-            media_urls = data['content']['mediaUrls']
-            if media_urls:
-                video_url = media_urls[0]['url']
-                await message.reply_video(f"{video_url}")
-            else:
-                await message.reply("Nᴏ ᴠɪᴅᴇᴏ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ʀᴇsᴘᴏɴsᴇ. Mᴀʏʙᴇ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴘʀɪᴠᴀᴛᴇ.")
+        if reels:
+            video_url = reels[0].url
+            await message.reply_video(f"{video_url}")
         else:
-            await message.reply("Rᴇǫᴜᴇsᴛ ᴡᴀs ɴᴏᴛ sᴜᴄᴄᴇssғᴜʟ.")
+            await message.reply("No reels found on the profile.")
     else:
-        await message.reply("Pʟᴇᴀsᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴠᴀʟɪᴅ Iɴsᴛᴀɢʀᴀᴍ URL ᴜsɪɴɢ ᴛʜᴇ /reels ᴄᴏᴍᴍᴀɴᴅ.")
-
+        await message.reply("Please provide a valid Instagram URL using the /reels command.")
