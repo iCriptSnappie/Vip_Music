@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from youtube_search import YoutubeSearch
 from yt_dlp import YoutubeDL
 
+import instaloader
 from VIPMUSIC import app
 from pyrogram import filters
 from pyrogram import Client, filters
@@ -82,8 +83,6 @@ def download_song(_, message):
 ###### INSTAGRAM REELS DOWNLOAD
 
 
-RAPIDAPI_KEY = "b8bfcee0-c342-11ee-bbcc-7ba751a18942"
-
 @app.on_message(filters.command(["reel"], ["/", "!", "."]))
 async def instagram_reel(client, message):
     if len(message.command) != 2:
@@ -92,32 +91,18 @@ async def instagram_reel(client, message):
 
     url = message.command[1]
 
-    # Set up RapidAPI headers
-    headers = {
-        "X-RapidAPI-Key": RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "instagram-reels-downloader2.p.rapidapi.com"
-    }
-
-    # Make a request to the RapidAPI service
-    response = requests.get("https://instagram-reels-downloader2.p.rapidapi.com/.netlify/functions/api/getLink", headers=headers, params={"url": url})
-
     try:
-        response.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        await message.reply(f"HTTP error occurred: {err}")
-        return
+        # Create an instaloader instance
+        L = instaloader.Instaloader()
 
-    data = response.json()
+        # Download the Instagram reel using the provided URL
+        L.download_profile(url, profile_pic_only=False)
 
-    if data.get('code') == 2:
-        media_urls = data['content'].get('mediaUrls', [])
-        if media_urls:
-            video_url = media_urls[0]['url']
-            if video_url:
-                await message.reply_video(video_url)
-            else:
-                await message.reply("No valid video URL found in the response.")
-        else:
-            await message.reply("No video found in the response. Maybe the account is private.")
-    else:
-        await message.reply("Request was not successful.")
+        # Get the downloaded video file path
+        video_path = f"{url.split('/')[-2]}_reel.mp4"
+
+        # Send the video as a reply
+        await message.reply_video(video_path)
+
+    except Exception as e:
+        await message.reply(f"An error occurred: {str(e)}")
