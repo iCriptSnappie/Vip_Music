@@ -30,7 +30,6 @@ async def helper_private(
         await update.edit_message_text(
             _["help_1"].format(SUPPORT_CHAT), 
             reply_markup=keyboard, 
-            disable_web_page_preview=True,
         )
     else:
         try:
@@ -44,7 +43,6 @@ async def helper_private(
             photo=START_IMG_URL,
             caption=_["help_1"].format(SUPPORT_CHAT),
             reply_markup=keyboard,
-            disable_web_page_preview=True,
         )
 
 
